@@ -1,0 +1,58 @@
+<div class="col-lg-3 hidden-md section_slide-menu" xmlns:th="http://thymeleaf.org" th:fragment="menu">
+    <aside>
+        <h2><i class="fa fa-bars" aria-hidden="true"></i> Menu</h2>
+        <nav>
+            <ul>
+                <li th:each="itemCate : ${categoryList}" th:object="${itemCate}" th:classappend="${session.active_menu} == *{code} ? active : ''"><a th:href="@{/list/food?category_code={code}(code=*{code})}"  th:text="*{name}" ></a></li>
+            </ul>
+        </nav>
+    </aside>
+    <th:block th:if="${FoodDTOByCategoryCode}">
+        <aside class="aside_filter hidden-dm">
+            <div class="title_module_main">
+                <h2>BỘ LỌC</h2>
+            </div>
+            <div class="aside_filter-main">
+                <h5>Mức giá</h5>
+                <ul>
+                    <li>
+                        <label for="0">
+                            <input type="radio" value="0" id="0" name="group_filter">
+                            Tất cả giá
+                        </label>
+                    </li>
+                    <li>
+                        <label for="1">
+                            <input type="radio" value="1" id="1" name="group_filter">
+                            Giá dưới 100.000đ
+                        </label>
+                    </li>
+                    <li>
+                        <label for="2">
+                            <input type="radio" value="2" id="2" name="group_filter">
+                            100.000đ - 200.000đ
+                        </label>
+                    </li>
+                    <li>
+                        <label for="3">
+                            <input type="radio" value="3" id="3" name="group_filter">
+                            200.000đ - 300.000đ
+                        </label>
+                    </li>
+                    <li>
+                        <label for="4">
+                            <input type="radio" value="4" id="4" name="group_filter">
+                            300.000đ - 500.000đ
+                        </label>
+                    </li>
+                    <li>
+                        <label for="5">
+                            <input type="radio" value="5" id="5" name="group_filter">
+                            Giá trên 500.000đ
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+    </th:block>
+</div>

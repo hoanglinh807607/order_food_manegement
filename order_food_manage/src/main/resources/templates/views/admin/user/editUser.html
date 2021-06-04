@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/admin.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Food edit</title>
+</head>
+<body layout:fragment="content">
+<div class="col-md-10 main__content" th:object="${userDTO}"> <!-- .main__content -->
+    <form th:action="@{/admin/api/user}" id="form_submit" method="POST">
+        <div class="header__main">
+            <h1 class="header__main-title">User</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/user/}">User</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" th:utext="*{id != null} ? Edit : Insert" ></li>
+                </ol>
+            </nav>
+        </div>
+        <div th:if="*{alert != null && alert != ''}">
+            <div class="alert" th:classappend="*{alert != null} ? 'alert-'+*{alert} : ''"  th:text="*{message}"></div>
+        </div>
+        <div class="body__main mt-2">
+            <div class="body__main-header" th:if="*{id != null}">
+                <i class="fa fa-pencil-square" aria-hidden="true"></i> Edit User
+            </div>
+            <div class="body__main-header" th:if="*{id == null}">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> Insert User
+            </div>
+            <hr>
+            <div class="body__main-content">
+
+                <div class="content__form-group">
+                    <div class="form-group__label col-2">
+                        <label for="username" class="col-form-label">User Name<strong style="color: red;">*</strong>: </label>
+                    </div>
+                    <input type="text" class="form-control form-group__input" id="username" th:field="*{username}" pattern="[a-zA-Z0-9!@#$%^&*]{6,}" autofocus maxlength="30" required>
+                </div>
+                <div class="content__form-group">
+                    <div class="form-group__label col-2">
+                        <label for="password" class="col-form-label">Password<strong style="color: red;">*</strong>: </label>
+                    </div>
+                    <input type="password" class="form-control form-group__input" id="password" name="password" th:value="*{password}" required>
+                </div>
+                <div class="content__form-group">
+                    <div class="form-group__label col-2">
+                        <label for="fullName" class="col-form-label">Full Name: </label>
+                    </div>
+                    <input type="text" class="form-control form-group__input" id="fullName" th:field="*{fullName}"  maxlength="40">
+                </div>
+                <div class="content__form-group">
+                    <div class="form-group__label col-2">
+                        <label for="phone" class="col-form-label">Phone<strong style="color: red;">*</strong>: </label>
+                    </div>
+                    <input type="text" class="form-control form-group__input" id="phone" th:field="*{phone}"  maxlength="10" required>
+                </div>
+                <div class="content__form-group">
+                    <div class="form-group__label col-2">
+                        <label for="address" class="col-form-label">Address<strong style="color: red;">*</strong>: </label>
+                    </div>
+                    <input type="text" class="form-control form-group__input" id="address" th:field="*{address}" required>
+                </div>
+                <div class="content__form-group">
+                    <div class="form-group__label col-2">
+                        <label class="col-form-label">role<strong style="color: red;">*</strong>: </label>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                        <th:block th:each="roleItem : ${roleList}">
+                            <input type="checkbox" class="btn-check" th:id="role+${roleItem.id}" name="roleId"  th:value="${roleItem.id}" th:checked="${#arrays.contains(userDTO.roleId,roleItem.id)}" autocomplete="off">
+                            <label class="btn btn-outline-primary btn_lable-check" th:for="role+${roleItem.id}" th:text="${roleItem.name}"></label>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="content__button">
+                    <th:block th:if="*{id == null}">
+                        <button type="submit" class="btn btn-primary btn-lg btn-add">Add Product</button>
+                    </th:block>
+                    <th:block th:unless="*{id == null}">
+                        <button type="submit" class="btn btn-primary btn-lg btn-add">Update Product</button>
+                    </th:block>
+                    <a class="btn btn-secondary btn-lg btn-cancel">Cancel</a>
+                </div>
+                <input type="hidden" id="id" th:field="*{id}">
+            </div>
+        </div>
+    </form>
+</div> <!-- /.main__content -->
+<script>
+    $(".btn-cancel").click(()=>{
+        $('#username').val("");
+        $("#password").val("");
+        $("#fullName").val("");
+        $("#phone").val("");
+        $("#address").val("");
+    })
+</script>
+</body>
+</html>
+
+

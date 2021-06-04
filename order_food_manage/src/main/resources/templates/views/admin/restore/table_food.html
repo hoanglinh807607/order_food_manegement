@@ -1,0 +1,38 @@
+<table  xmlns:th="http://thymeleaf.org" th:object="${dto}">
+    <thead>
+        <tr>
+            <th scope="col"><input type="checkbox" id="checkAll"></th>
+            <th scope="col" style="width: 15%;">Hình ảnh</th>
+            <th scope="col" style="width: 10%;">Tên món ăn</th>
+            <th scope="col" style="width: 25%;">Mô tả</th>
+            <th scope="col" style="width: 10%;">Giá</th>
+            <th scope="col" style="width: 10%;">Giá khuyến mãi</th>
+            <th scope="col" style="width: 10%;">Tên thể loại</th>
+            <th scope="col" style="width: 10%;">Tên nhóm món</th>
+            <th scope="col" style="width: 5%;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <th:block th:each="foodItem : *{resultList}" th:object="${foodItem}">
+            <th:block th:unless="*{status}">
+                <tr>
+                    <td scope="row"><input type="checkbox" name="id" th:value="*{id}"></td>
+                    <th:block th:unless="*{imageDTOS}">
+                        <td><img th:src="@{/image_upload/{image}(image=${imageItem.path})}" alt=""></td>
+                    </th:block>
+                    <th:block th:each="imageItem : *{imageDTOS}" th:if="${imageItem.is_preview}">
+                        <td><img th:src="@{/image_upload/{image}(image=${imageItem.path})}" alt=""></td>
+                    </th:block>
+                    <td th:text="*{name}"></td>
+                    <td th:text="*{description}"></td>
+                    <td th:text="*{price}"></td>
+                    <td th:text="*{pricePromotion}"></td>
+                    <td th:text="*{categoryName}"></td>
+                    <td th:text="*{foodGroupName}"></td>
+                    <td><a th:href="@{/admin/api/food/detail/{id}(id=*{id})}" class="btn btn-info"
+                    ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                </tr>
+            </th:block>
+        </th:block>
+    </tbody>
+</table>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/login.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body layout:fragment="content">
+<section  class="login">
+    <div class="login_blurred"></div>
+    <div class="login_body">
+        <!-- Register -->
+        <form  method="POST" id="form_register">
+            <div class="auth_form">
+                <div class="auth_form-container">
+                    <div class="auth_form-header">
+                        <h3>REGISTER</h3>
+                    </div>
+                    <div class="auth_form-body">
+                        <span id="username_error" class="error"></span>
+                        <input type="text" class="auth_form-input" id="userName" name="username" placeholder="Username" maxlength="30" pattern="[a-zA-Z0-9!@#$%^&*]{6,}" required>
+                        <span id="password_error" class="error"></span>
+                        <input type="password" class="auth_form-input" id="password" name="password" placeholder="Password " maxlength="20" pattern="[a-zA-Z0-9!@#$%^&*]{6,}" required>
+                        <span id="confirm_password_error" class="error"></span>
+                        <input type="password" class="auth_form-input" id="confirm_password" placeholder="Confirm password" pattern="[a-zA-Z0-9!@#$%^&*]{6,}" required>
+                        <input type="text" class="auth_form-input" id="fullName" name="fullName" placeholder="Full name" maxlength="40" required>
+                        <span id="phone_error" class="error"></span>
+                        <input type="tel" class="auth_form-input" id="phone" name="phone" placeholder="Phone number" maxlength="10" required>
+                        <input type="text" class="auth_form-input" id="address" name="address" placeholder="Address" maxlength="70" required>
+                    </div>
+                    <div class="auth_form-controls">
+                        <a th:href="@{/login}" class="btn btn_control control_back" id="back_register">Back to login</a>
+                        <button type="button" class="btn btn_control control_register" id="confirm_register">Register</button>
+                    </div>
+                    <div class="auth-form__socials">
+                        <span>Or login with </span>
+                        <a href="https://www.facebook.com/" class="btn facebook">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://accounts.google.com/ServiceLogin/identifier?continue=https%3A%2F%2Fwww.google.com%2Fwebhp%3Fauthuser%3D2&hl=vi&flowName=GlifWebSignIn&flowEntry=AddSession"
+                           class="btn google">
+                            <i class="fa fa-google" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://accounts.google.com/ServiceLogin/identifier?continue=https%3A%2F%2Fwww.google.com%2Fwebhp%3Fauthuser%3D2&hl=vi&flowName=GlifWebSignIn&flowEntry=AddSession"
+                           class="btn twitter">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

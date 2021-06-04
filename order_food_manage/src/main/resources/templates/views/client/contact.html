@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/client.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Introduce page</title>
+</head>
+<body layout:fragment="content">
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <form  class="form-contact" th:object="${contactDTO}" id="form_contact">
+                        <h2>Gửi thông tin liên hệ</h2>
+                        <div class="form_group">
+                            <div class="form-group__label">
+                                <label for="fullName" class="col-form-label">Họ và tên:</label>
+                            </div>
+                            <input type="text" class="form-control"  id="fullName" th:field="*{fullName}" maxlength="40" required>
+                        </div>
+                        <div class="form_group">
+                            <div class="form-group__label">
+                                <label for="phone" class="col-form-label">Điện thoại liên lạc:</label>
+                            </div>
+                            <input type="text" class="form-control" id="phone" th:field="*{phone}" maxlength="10" required>
+                        </div>
+                        <div class="form_group">
+                            <div class="form-group__label">
+                                <label for="email" class="col-form-label">Email:</label>
+                            </div>
+                            <input type="text" class="form-control" id="email" th:field="*{email}" maxlength="35" required>
+                        </div>
+                        <div class="form_group">
+                            <div class="form-group__label">
+                                <label for="title" class="col-form-label">Tiêu đề:</label>
+                            </div>
+                            <input type="text" class="form-control " id="title" th:field="*{title}" maxlength="100" required>
+                        </div>
+                        <div class="form_group">
+                            <div class="form-group__label">
+                                <label for="content" class="col-form-label">Nội dung góp ý:</label>
+                            </div>
+                            <textarea class="form-control" rows="5" id="content" th:field="*{content}" required>
+                            </textarea>
+                        </div>
+                        <div class="form_group mt-2">
+                            <input type="button" class="btn btn-primary btn_contact-submit" id="btnSubmit_contact" maxlength="10" value="Gửi liên hệ" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="address_contact">
+                        <div class="address_contact-header">
+                            <img th:src="@{/image/icon_contact.jpg}" alt="">
+                            <h3>Địa chỉ</h3>
+                        </div>
+                        <article>
+                            <h4>Tại TP.HCM</h4>
+                            <p>97 Man Thiện, phường Hiệp Phú, quận 9 TP.Hồ Chí Minh</p>
+                            <p>Tel(Vina): <span>0123456789</span></p>
+                            <p>Tel(Viettel): <span>0123123123</span></p>
+                        </article>
+                        <hr>
+                        <article>
+                            <h4>Tại Hà Nội</h4>
+                            <p>Núi cấm, huyện Chương Mĩ, Hà Nội (Hà Tây cũ)</p>
+                            <p>Tel(Vina): <span>0123456789</span></p>
+                            <p>Tel(Viettel): <span>0123123123</span></p>
+                        </article>
+                        <hr>
+                        <article>
+                            <h4>Tại Cần Thơ</h4>
+                            <p>Đường 3/2, Phường Xuân Khánh, Quận Ninh Kiều, Thành phố Cần Thơ</p>
+                            <p>Tel(Vina): <span>0123456789</span></p>
+                            <p>Tel(Viettel): <span>0123123123</span></p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</div>
+</session>
+    <div id="div_bando">
+        <div id="map"></div>
+        <script th:src="@{/qgis/js/ScriptMap.js}"></script>
+    </div>
+</body>
+</html>

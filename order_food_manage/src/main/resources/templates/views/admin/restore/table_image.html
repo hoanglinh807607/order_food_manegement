@@ -1,0 +1,25 @@
+<table xmlns:th="http://thymeleaf.org" th:object="${dto}">
+    <thead>
+    <tr>
+        <th scope="col"><input type="checkbox" id="checkAll"></th>
+        <th scope="col" style="width: 40%;">Hình ảnh</th>
+        <th scope="col" style="width: 20%;">Ảnh chính</th>
+        <th scope="col" style="width: 25%;">Tên món ăn</th>
+        <th scope="col" style="width: 10%;"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="imageItem : *{resultList}" th:object="${imageItem}">
+        <th:block th:unless="*{status}">
+            <tr>
+                <td scope="row"><input type="checkbox" name="id" th:value="*{id}"></td>
+                <td><img th:src="@{/image_upload/{path}(path=*{path})}" alt=""></td>
+                <td th:text="*{is_preview} == true ? 1 : 0"></td>
+                <td th:text="*{foodName}"></td>
+                <td><a th:href="@{/admin/api/image/detail/{id}(id=*{id})}" class="btn btn-info"
+                ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+            </tr>
+        </th:block>
+    </th:block>
+    </tbody>
+</table>

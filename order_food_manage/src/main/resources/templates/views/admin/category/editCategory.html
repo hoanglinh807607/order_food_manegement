@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/admin.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Food edit</title>
+</head>
+<body layout:fragment="content">
+<div class="col-md-10 main__content" th:object="${categoryDTO}"> <!-- .main__content -->
+    <form th:action="@{/admin/api/category}" id="form_submit" method="POST">
+        <div class="header__main">
+            <h1 class="header__main-title">Category</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/category/}">Category</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" th:utext="*{id != null} ? Edit : Insert" ></li>
+                </ol>
+            </nav>
+        </div>
+        <div th:if="*{alert != null && alert != ''}">
+            <div class="alert" th:classappend="*{alert != null} ? 'alert-'+*{alert} : ''"  th:text="*{message}"></div>
+        </div>
+        <div class="body__main mt-2">
+            <div class="body__main-header">
+                <th:block th:if="*{id != null}">
+                    <i class="fa fa-pencil-square" aria-hidden="true"></i> Edit Group
+                </th:block>
+                <th:block th:unless="*{id != null}">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Insert Group
+                </th:block>
+            </div>
+            <hr>
+            <div class="body__main-content">
+                <div class="content__form-group">
+                    <div class="form-group__label col-2">
+                        <label for="code" class="col-form-label">Code<strong style="color: red;">*</strong>: </label>
+                    </div>
+                    <input type="text" class="form-control form-group__input" id="code" th:field="*{code}" required>
+                </div>
+                <div class="content__form-group">
+                    <div class="form-group__label col-2">
+                        <label for="name" class="col-form-label">Name<strong style="color: red;">*</strong>: </label>
+                    </div>
+                    <input type="text" class="form-control form-group__input" id="name" th:field="*{name}" required>
+                </div>
+                <div class="content__button">
+                    <th:block th:if="*{id == null}">
+                        <button type="submit" class="btn btn-primary btn-lg btn-add">Add Group</button>
+                    </th:block>
+                    <th:block th:unless="*{id == null}">
+                        <button type="submit" class="btn btn-primary btn-lg btn-add">Update Group</button>
+                    </th:block>
+                    <a class="btn btn-secondary btn-lg btn-cancel">Cancel</a>
+                </div>
+                <input type="hidden" id="id" th:field="*{id}">
+            </div>
+        </div>
+    </form>
+</div> <!-- /.main__content -->
+<script>
+    $(".btn-cancel").click(()=>{
+        $('#code').val("");
+        $("#name").val("");
+    })
+</script>
+</body>
+</html>
+
+

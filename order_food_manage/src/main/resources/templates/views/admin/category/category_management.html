@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/admin.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Admin User</title>
+</head>
+<body layout:fragment="content">
+<div class="col-md-10 main__content"> <!-- .main__content -->
+    <form th:action="@{/admin/api/category}" id="form_submit" method="GET" th:object="${categoryDTO}">
+        <div class="header__main">
+            <h1 class="header__main-title">Category</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Category</li>
+                </ol>
+            </nav>
+        </div>
+        <div th:if="*{alert != null && alert != ''}">
+            <div class="alert" th:classappend="*{alert != null} ? 'alert-'+*{alert} : ''"  th:text="*{message}"></div>
+        </div>
+        <div class="body__main mt-2" >
+            <div>
+                <a th:href="@{/admin/category/create}" class="btn btn-info btn__add"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add Category</a>
+                <a class="btn btn-danger btn__delete" onclick="warningBeforeDelete()" ><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+            </div>
+            <nav>
+                <div class="datatable__length">
+                    Display
+                    <select id="select__length">
+                        <option value="5" th:selected="*{limit} == 5">5</option>
+                        <option value="10" th:selected="*{limit} == 10">10</option>
+                        <option value="15" th:selected="*{limit} == 15">15</option>
+                        <option value="1"  th:selected="*{limit} == 1">All</option>
+                    </select>
+                    records
+                </div>
+                <div class="d-flex">
+                    <form >
+                        <input class="form-control search" type="search" name="search" id="search" placeholder="Search" aria-label="Search" th:value="*{search}">
+                        <button class="btn btn-outline-success" id="button_search">Search</button>
+                        <button class="btn btn-outline-danger" id="button_clear">Clear</button>
+                    </form>
+                </div>
+            </nav>
+            <table class="table table-bordered mt-3">
+                <thead>
+                <tr>
+                    <th scope="col"><input type="checkbox" id="checkAll"></th>
+                    <th scope="col" style="width: 40%;">Mã thể loại</th>
+                    <th scope="col" style="width: 40%;">Tên thể loại</th>
+                    <th scope="col" style="width: 15%;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="categoryItem : *{resultList}" th:object="${categoryItem}">
+                        <tr>
+                            <td scope="row"><input type="checkbox" name="id" th:value="*{id}"></td>
+                            <td th:text="*{code}"></td>
+                            <td th:text="*{name}"></td>
+                            <td>
+                                <a th:href="@{/admin/category/{id}(id=*{id})}" class="btn btn-info">
+                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                </a>
+                                <a th:href="@{/admin/category/detail/{id}(id=*{id})}" class="btn btn-info" title="Detail">
+                                    <i class="fa fa-search-plus" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+            <ul class="pagination pagging" id="pagination" ></ul>
+            <input type="hidden" name="limit" id="limit">
+            <input type="hidden" name="page" id="page">
+        </div>
+    </form>
+</div> <!-- /.main__content -->
+<script>
+    $(()=>{
+        const currentPage = [[${categoryDTO.page}]];
+        const totalPage = [[${categoryDTO.totalPage}]];
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: totalPage,          /* Số phân trang được hiển thị ra ngoài  */
+            visiblePages: 10,              /* Số phân trang cho phép hiển thị tối đa */
+            startPage: currentPage,
+            onPageClick: function (event, page) {
+                if( page != currentPage){
+                    $("#limit").val($("#select__length").val());
+                    $("#page").val(page);
+                    $('#form_submit').submit();
+                }
+            }
+        }).on('page', function (event, page) {
+            console.info(page + ' (from event listening)');
+        });
+    });
+
+    function warningBeforeDelete() {
+        swal({
+            title: "Xác nhận xóa",
+            text: "Bạn có chắc chắn muốn xóa hay không",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-success",
+            cancelButtonClass: "btn-danger",
+            confirmButtonText: "Xác nhận",
+            cancelButtonText: "Hủy bỏ",
+        }).then(function(isConfirm) {
+            if (isConfirm.dismiss != "cancel") {
+                const data = {};
+                let ids = $('tbody input[type=checkbox]:checked').map(function () {
+                    return $(this).val();
+                }).get();
+                data['ids'] = ids;
+                deleteObject(data);
+            }
+        });
+    };
+    function deleteObject(data){
+        $.ajax({
+            url: '/admin/api/category',
+            type: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: result =>{
+                console.log(result);
+                window.location.assign("/admin/category?limit="+$("#select__length").val()+"&alert=success&message=Deletesuccess");
+            },
+            error: result =>{
+                console.log(result);
+                window.location.assign("/admin/category?limit="+$("#select__length").val()+"&alert=success&message=Deletefailed");
+            }
+        });
+    }
+</script>
+</body>
+</html>
+
+

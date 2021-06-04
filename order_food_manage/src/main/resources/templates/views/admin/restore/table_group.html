@@ -1,0 +1,23 @@
+<table xmlns:th="http://thymeleaf.org" th:object="${dto}">
+    <thead>
+    <tr>
+        <th scope="col"><input type="checkbox" id="checkAll"></th>
+        <th scope="col" style="width: 40%;">Mã nhóm món</th>
+        <th scope="col" style="width: 40%;">Tên nhóm món</th>
+        <th scope="col" style="width: 10%;"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="roleItem : *{resultList}" th:object="${roleItem}">
+        <th:block th:unless="*{status}">
+            <tr>
+                <td scope="row"><input type="checkbox" name="id" th:value="*{id}"></td>
+                <td th:text="*{code}"></td>
+                <td th:text="*{name}"></td>
+                <td><a th:href="@{/admin/api/role/detail/{id}(id=*{id})}" class="btn btn-info"
+                ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+            </tr>
+        </th:block>
+    </th:block>
+    </tbody>
+</table>

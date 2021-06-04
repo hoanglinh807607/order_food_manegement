@@ -1,0 +1,35 @@
+<th:block th:if="${#lists.size(FoodDTOByCategoryCode.resultList)}">
+    <aside class="row list_view" xmlns:th="http://thymeleaf.org">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 list_view-line"
+             th:each="itemFood : ${FoodDTOByCategoryCode.resultList}" th:object="${itemFood}">
+            <article class="line_item">
+                <div class="line_item-image">
+                    <a th:href="@{/food/details/{id}(id=*{id})}">
+                        <th:block th:each="itemImage : *{imageDTOS}" th:object="${itemImage}">
+                            <th:block th:if="*{is_preview}">
+                                <img  th:src="@{/image_upload/{path}(path=*{path})}" alt="">
+                            </th:block>
+                        </th:block>
+                    </a>
+                </div>
+                <div class="line_item-info">
+                    <h3 class="info_name" th:text="*{name}"></h3>
+                    <div class="product_info-price">
+                                                        <span class="price_special">
+                                                            <span th:text="*{pricePromotion} ? *{pricePromotion} : *{price}" th:remove="tag"></span><sup>đ</sup>
+                                                        </span>
+                        <th:block th:if="*{pricePromotion}">
+                            <span class="price_old" >[[*{price}]]<sup>đ</sup></span>
+                        </th:block>
+                    </div>
+                    <p th:text="*{description}"></p>
+                    <div class="action-listview action-id">
+                        <a class="action_icon" th:onclick="addtocart_quick([[${itemFood.id}]]);"  title="Cho vào giỏ hàng"><i class="fa fa-shopping-basket"></i></a>
+                        <a class="action_icon"  th:onclick="display_viewquick([[${itemFood.id}]]);" title="Xem nhanh"><i class="fa fa-search-plus"></i></a>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <input type="hidden" name="page" id="page">
+    </aside>
+</th:block>

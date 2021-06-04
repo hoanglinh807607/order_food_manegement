@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/client.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>List Food By Category</title>
+</head>
+<body layout:fragment="content">
+                <div class="col-lg-9 product_content">
+                    <aside>
+                        <div class="row sort_cate">
+                            <div class="col-12 title_module_main">
+                                <div class="row ">
+                                    <div class="col-lg-6 col-md-6 display_format hidden-sm">
+                                        <a href="#" class="active " id="displayGrid"><i class="fa fa-th" aria-hidden="true"></i></a>
+                                        <a href="#" id="displayList" ><i class="fa fa-bars" aria-hidden="true"></i></a>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 sort_by">
+                                        <label>Sắp xếp: </label>
+                                        <select id="sort" onchange="handleDisplayFood()">
+                                            <option value="0">Mặc định</option>
+                                            <option value="1" >A->Z</option>
+                                            <option value="2">Z->A</option>
+                                            <option value="3">Giá tăng dần</option>
+                                            <option value="4">Giá giảm dần</option>
+                                            <option value="5">Món mới nhất</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <section class="main_content">
+                                <th:block th:if="${#lists.size(FoodDTOByCategoryCode.resultList)}">
+                                    <aside class="row grid_view">
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 item_product"
+                                             th:each="itemFood : ${FoodDTOByCategoryCode.resultList}" th:object="${itemFood}">
+                                            <div class="item_product-main">
+                                                <div class="thumbnail"
+                                                     th:onmouseover="displayAction([[${itemFood.id}]]);" th:onmouseout="hiddenAction([[${itemFood.id}]]);">
+                                                    <a th:href="@{/food/details/{id}(id=*{id})}">
+                                                        <th:block th:each="itemImage : *{imageDTOS}" th:object="${itemImage}">
+                                                            <th:block th:if="*{is_preview}">
+                                                                <img  th:src="@{/image_upload/{path}(path=*{path})}" alt="">
+                                                            </th:block>
+                                                        </th:block>
+                                                    </a>
+                                                    <th:block th:if="*{pricePromotion}">
+                                                        <div class="saleright">
+                                                            <span>KM</span>
+                                                        </div>
+                                                    </th:block>
+                                                </div>
+                                                <div class="product_action" th:id="action+*{id}"
+                                                     th:onmouseover="displayAction([[${itemFood.id}]]);"
+                                                     th:onmouseout="hiddenAction([[${itemFood.id}]]);">
+                                                    <a class="action_icon" th:onclick="addtocart_quick([[${itemFood.id}]]);"  title="Cho vào giỏ hàng"><i class="fa fa-shopping-basket"></i></a>
+                                                    <a class="action_icon hidden-md" th:onclick="display_viewquick([[${itemFood.id}]]);" title="Xem nhanh"><i class="fa fa-search-plus"></i></a>
+                                                </div>
+                                                <div class="product_info">
+                                                    <div class="product_info-price">
+                                                    <span class="price_special">
+                                                        <span th:text="*{pricePromotion} ? *{pricePromotion} : *{price}" th:remove="tag"></span><sup>đ</sup>
+                                                    </span>
+                                                        <th:block th:if="*{pricePromotion}">
+                                                            <span class="price_old" >[[*{price}]]<sup>đ</sup></span>
+                                                        </th:block>
+                                                    </div>
+                                                    <h6 class="product_name" th:text="*{name}"></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </aside>
+                                </th:block>
+                            </section>
+                            <th:block th:if="${#lists.size(FoodDTOByCategoryCode.resultList)}">
+                                <ul class="pagination pagging" id="pagination" ></ul>
+                            </th:block>
+                        </div>
+                        <input type="hidden" id="page">
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div id="quick_view" class="hidden-md" style="display: none;">
+    </div>
+    <script>
+        $(()=>{
+            const currentPage = [[${FoodDTOByCategoryCode.page}]];
+            const totalPage = [[${FoodDTOByCategoryCode.totalPage}]];
+            window.pagObj = $('#pagination').twbsPagination({
+                totalPages: totalPage,          /* Số phân trang được hiển thị ra ngoài  */
+                visiblePages: 10,              /* Số phân trang cho phép hiển thị tối đa */
+                startPage: currentPage,
+                onPageClick: function (event, page) {
+                    if( page != currentPage){
+                        document.getElementById("page").value = page;
+                        handleDisplayFood()
+                    }
+                }
+            }).on('page', function (event, page) {
+                console.info(page + ' (from event listening)');
+            });
+        });
+        function handleDisplayFood(){
+            let grid = document.getElementById("displayGrid");
+            let list = document.getElementById("displayList");
+            grid.onclick = function(){
+                grid.classList.add("active");
+                list.classList.remove("active");
+                handleDisplayFood()
+            }
+            list.onclick = function(){
+                list.classList.add("active");
+                grid.classList.remove("active");
+                handleDisplayFood()
+            }
+            let typeShow = "";
+            if ( document.getElementById("displayList").classList.contains("active") ) typeShow = "list";
+            else typeShow = "grid";
+            let url = "/list/food?category_code=[[${session.active_menu}]]&typeShow="+typeShow;
+            let page = document.getElementById("page").value;
+            let idSort = document.getElementById("sort").value;
+            let filterPrice;
+            let radios = document.getElementsByName("group_filter");
+            for (let i = 0; i < radios.length; i++){
+                radios[i].onchange = function(){
+                    handleDisplayFood()
+                }
+                if (radios[i].checked === true){
+                    filterPrice = radios[i].value;
+                }
+            }
+            if( page != undefined && page != "" ) url+="&page="+page;
+            if( idSort != undefined && idSort != "") url+="&idSort="+idSort;
+            if( filterPrice != undefined && filterPrice != "") url+="&filterPrice="+filterPrice;
+            ajaxPostList(url)
+        }
+        handleDisplayFood()
+
+        function ajaxPostList(url){
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: result=>{
+                    let main_content = document.querySelector(".main_content");
+                    main_content.innerHTML = "";
+                    if( result != "" ) {
+                        main_content.innerHTML = result;
+                        document.getElementById("pagination").style.display = "flex";
+                    }else{
+                        main_content.innerHTML = " <div class=\"empty_food\">\n" +
+                            "                                        <h4>Không tìm thấy sản phẩm</h4>\n" +
+                            "                                    </div>";
+                    }
+                },
+                error: result=>{
+                    alert(result);
+                    console.log(result);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

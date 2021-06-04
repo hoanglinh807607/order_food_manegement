@@ -1,0 +1,37 @@
+<header xmlns:th="http://thymeleaf.org">
+    <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-12 header_logo hidden-sm">
+            <h5>Hội Ngộ Restaurant</h5>
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-12 navbar">
+            <div class="header_nav">
+                <nav>
+                    <ul>
+                        <li><span class="nav_user-photo"><i class="fa fa-user-circle-o" aria-hidden="true"></i></span></i></li>
+                        <li>
+                            <div class="dropdown">
+                                <a class="btn dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    [[${session.auth.getName()}]]
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/admin/api/restore}">
+                                            <i class="menu-icon fa fa-window-restore" aria-hidden="true"></i>
+                                            &nbsp Restore Data
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/logout}">
+                                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                            &nbsp Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>

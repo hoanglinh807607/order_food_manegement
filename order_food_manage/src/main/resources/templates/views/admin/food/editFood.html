@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/admin.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Food edit</title>
+</head>
+<body layout:fragment="content">
+    <div class="col-md-10 main__content" th:object="${foodDTO}"> <!-- .main__content -->
+        <form th:action="@{/admin/api/food}" id="form_submit" method="POST">
+            <div class="header__main">
+                <h1 class="header__main-title">Food</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{/admin/food/}">Food</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" th:utext="*{id != null} ? Edit : Insert" ></li>
+                    </ol>
+                </nav>
+            </div>
+            <div th:if="*{alert != null && alert != ''}">
+                <div class="alert" th:classappend="*{alert != null} ? 'alert-'+*{alert} : ''"  th:text="*{message}"></div>
+            </div>
+            <div class="body__main mt-2">
+                <div class="body__main-header" th:if="*{id != null}">
+                    <i class="fa fa-pencil-square" aria-hidden="true"></i> Edit Food
+                </div>
+                <div class="body__main-header" th:if="*{id == null}">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Insert Food
+                </div>
+                <hr>
+                <div class="body__main-content">
+                    <div class="content__form-group">
+                        <div class="form-group__label col-2">
+                            <label for="category_id" class="col-form-label">Category<strong style="color: red;">*</strong>: </label>
+                        </div>
+                        <select class="form-control form-group__input" id="category_id" th:field="*{categoryId}" required>
+                            <option value="0">Chose Category</option>
+                            <option th:each="category : ${categoryList}" th:value="${category.id}" th:text="${category.name}" th:selected="*{categoryId}==${category.id}"></option>
+                        </select>
+                    </div>
+                    <div class="content__form-group">
+                        <div class="form-group__label col-2">
+                            <label for="food_group_id" class="col-form-label">Food Group<strong style="color: red;">*</strong>: </label>
+                        </div>
+                        <select class="form-control form-group__input" id="food_group_id" th:field="*{foodGroupId}" required>
+                            <option value="0">Chose Food Group</option>
+                            <option th:each="foodGroup : ${foodGroupList}" th:value="${foodGroup.id}" th:text="${foodGroup.name}" th:selected="*{foodGroupId}==${foodGroup.id}"></option>
+                        </select>
+                    </div>
+                    <div class="content__form-group">
+                        <div class="form-group__label col-2">
+                            <label for="name" class="col-form-label">Name<strong style="color: red;">*</strong>: </label>
+                        </div>
+                        <input type="text" class="form-control form-group__input" id="name" th:field="*{name}" required>
+                    </div>
+                    <div class="content__form-group">
+                        <div class="form-group__label col-2">
+                            <label for="price" class="col-form-label">Price<strong style="color: red;">*</strong>: </label>
+                        </div>
+                        <input type="text" class="form-control form-group__input" id="price" th:field="*{price}" required>
+                    </div>
+                    <div class="content__form-group">
+                        <div class="form-group__label col-2">
+                            <label for="price_promotion" class="col-form-label">Price promotion: </label>
+                        </div>
+                        <input type="text" class="form-control form-group__input" id="price_promotion" th:field="*{pricePromotion}">
+                    </div>
+                    <div class="content__form-group">
+                        <div class="form-group__label col-2">
+                            <label for="description" class="col-form-label">Description<strong style="color: red;">*</strong>: </label>
+                        </div>
+                        <input type="text" class="form-control form-group__input" id="description" th:field="*{description}" required>
+                    </div>
+                    <th:block th:if="*{id}">
+                        <div class="content__form-group">
+                            <div class="form-group__label col-2">
+                                <label for="price_promotion" class="col-form-label">Update image: </label>
+                            </div>
+                            <a th:href="@{/admin/api/image}" class="btn btn-success form-group__input" >Go to update image</a>
+                        </div>
+                    </th:block>
+                    <div class="content__button">
+                        <th:block th:if="*{id == null}">
+                            <button type="submit" class="btn btn-primary btn-lg btn-add">Add Product</button>
+                        </th:block>
+                        <th:block th:unless="*{id == null}">
+                            <button type="submit" class="btn btn-primary btn-lg btn-add">Update Product</button>
+                        </th:block>
+                        <a class="btn btn-secondary btn-lg btn-cancel">Cancel</a>
+                    </div>
+                    <input type="hidden" id="id" th:field="*{id}">
+                </div>
+            </div>
+        </form>
+    </div> <!-- /.main__content -->
+    <script>
+        $(".btn-cancel").click(()=>{
+            $('#category_id option:eq(0)').attr('selected', 'selected')
+            $("#name").val("");
+            $("#price").val("");
+            $("#content").val("");
+            $("#image").val("");
+        })
+    </script>
+</body>
+</html>
+
+

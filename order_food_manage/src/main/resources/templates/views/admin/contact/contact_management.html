@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/admin.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Admin User</title>
+</head>
+<body layout:fragment="content">
+<div class="col-md-10 main__content"> <!-- .main__content -->
+    <form th:action="@{/admin/api/contact}" id="form_submit" method="GET" th:object="${contactDTO}">
+        <div class="header__main">
+            <h1 class="header__main-title">Contact</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Contact</li>
+                </ol>
+            </nav>
+        </div>
+        <div th:if="*{alert != null && alert != ''}">
+            <div class="alert" th:classappend="*{alert != null} ? 'alert-'+*{alert} : ''"  th:text="*{message}"></div>
+        </div>
+        <div class="body__main mt-2" >
+            <div>
+                <a class="btn btn-danger btn__delete" onclick="warningBeforeDelete()" ><i class="fa fa-trash" aria-hidden="true"></i> Delete</a>
+            </div>
+            <nav>
+                <div class="datatable__length">
+                    Display
+                    <select id="select__length">
+                        <option value="5" th:selected="*{limit} == 5">5</option>
+                        <option value="10" th:selected="*{limit} == 10">10</option>
+                        <option value="15" th:selected="*{limit} == 15">15</option>
+                        <option value="1"  th:selected="*{limit} == 1">All</option>
+                    </select>
+                    records
+                </div>
+                <div class="d-flex">
+                    <form >
+                        <input class="form-control search" type="search" name="search" id="search" placeholder="Search" aria-label="Search" th:value="*{search}">
+                        <button class="btn btn-outline-success" id="button_search">Search</button>
+                        <button class="btn btn-outline-danger" id="button_clear">Clear</button>
+                    </form>
+                </div>
+            </nav>
+            <table class="table table-bordered mt-3 ">
+                <thead>
+                <tr>
+                    <th scope="col"><input type="checkbox" id="checkAll"></th>
+                    <th scope="col" style="width: 20%;">Email</th>
+                    <th scope="col" style="width: 20%;">Họ tên</th>
+                    <th scope="col" style="width: 15%;">Số điện thoại</th>
+                    <th scope="col" style="width: 15%;">Tiêu đề</th>
+                    <th scope="col" style="width: 10%;">Trạng thái</th>
+                    <th scope="col" style="width: 15%;">Chi tiết</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="contactItem : *{resultList}" th:object="${contactItem}">
+                        <tr>
+                            <td scope="row"><input type="checkbox" name="id" th:value="*{id}"></td>
+                            <td th:text="*{email}"></td>
+                            <td th:text="*{fullName}"></td>
+                            <td th:text="*{phone}"></td>
+                            <td th:text="*{title}"></td>
+                            <th:block th:if="*{state}">
+                                <td>Đã xem</td>
+                            </th:block>
+                            <th:block th:unless="*{state}">
+                                <td><strong>Chưa xem</strong></td>
+                            </th:block>
+                            <td>
+                                <a th:href="@{/admin/contact/{id}(id=*{id})}" class="btn btn-info" title="Detail">
+                                    <i class="fa fa-search-plus" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+            <ul class="pagination pagging" id="pagination" ></ul>
+            <input type="hidden" name="limit" id="limit">
+            <input type="hidden" name="page" id="page">
+        </div>
+    </form>
+</div> <!-- /.main__content -->
+<script>
+
+    $(()=>{
+        const currentPage = [[${contactDTO.page}]];
+        const totalPage = [[${contactDTO.totalPage}]];
+        window.pagObj = $('#pagination').twbsPagination({
+            totalPages: totalPage,          /* Số phân trang được hiển thị ra ngoài  */
+            visiblePages: 10,              /* Số phân trang cho phép hiển thị tối đa */
+            startPage: currentPage,
+            onPageClick: function (event, page) {
+                if( page != currentPage){
+                    $("#limit").val($("#select__length").val());
+                    $("#page").val(page);
+                    $('#form_submit').submit();
+                }
+            }
+        }).on('page', function (event, page) {
+            console.info(page + ' (from event listening)');
+        });
+    });
+    function warningBeforeDelete() {
+        swal({
+            title: "Xác nhận xóa",
+            text: "Bạn có chắc chắn muốn xóa hay không",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-success",
+            cancelButtonClass: "btn-danger",
+            confirmButtonText: "Xác nhận",
+            cancelButtonText: "Hủy bỏ",
+        }).then(function(isConfirm) {
+            if (isConfirm.dismiss != "cancel") {
+                const data = {};
+                let ids = $('tbody input[type=checkbox]:checked').map(function () {
+                    return $(this).val();
+                }).get();
+                data['ids'] = ids;
+                deleteObject(data);
+            }
+        });
+    };
+    function deleteObject(data){
+        $.ajax({
+            url: '/admin/api/contact',
+            type: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: result =>{
+                console.log(result);
+                window.location.assign("/admin/contact?limit="+$("#select__length").val()+"&alert=success&message=Deletesuccess");
+            },
+            error: result =>{
+                console.log(result);
+                window.location.assign("/admin/contact?limit="+$("#select__length").val()+"&alert=success&message=Deletefailed");
+            }
+        });
+    }
+</script>
+</body>
+</html>
+
+

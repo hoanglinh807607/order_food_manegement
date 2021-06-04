@@ -1,0 +1,34 @@
+<table xmlns:th="http://thymeleaf.org" th:object="${dto}">
+    <thead>
+    <tr>
+        <th scope="col"><input type="checkbox" id="checkAll"></th>
+        <th scope="col" style="width: 20%;">Email</th>
+        <th scope="col" style="width: 20%;">Họ tên</th>
+        <th scope="col" style="width: 15%;">Số điện thoại</th>
+        <th scope="col" style="width: 20%;">Tiêu đề</th>
+        <th scope="col" style="width: 10%;">Trạng thái</th>
+        <th scope="col" style="width: 10%;">chi tiết</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="contactItem : *{resultList}" th:object="${contactItem}">
+        <th:block th:unless="*{status}">
+            <tr>
+                <td scope="row"><input type="checkbox" name="id" th:value="*{id}"></td>
+                <td th:text="*{email}"></td>
+                <td th:text="*{fullName}"></td>
+                <td th:text="*{phone}"></td>
+                <td th:text="*{title}"></td>
+                <th:block th:if="*{state}">
+                    <td>Đã xem</td>
+                </th:block>
+                <th:block th:unless="*{state}">
+                    <td><strong>Chưa xem</strong></td>
+                </th:block>
+                <td><a th:href="@{/admin/api/contact/detail/{id}(id=*{id})}" class="btn btn-info" title="Detail"
+                ><i class="fa fa-search-plus" aria-hidden="true"></i></a></td>
+            </tr>
+        </th:block>
+    </th:block>
+    </tbody>
+</table>

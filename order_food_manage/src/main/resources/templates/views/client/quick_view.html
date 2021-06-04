@@ -1,0 +1,52 @@
+<div id="quick_view_product" class="hidden-md" xmlns:th="http://thymeleaf.org">
+    <div class="quick_view_product">
+    </div>
+    <div class="quick_view-body" th:object="${foodDto}">
+        <aside>
+            <div class="row product_detail-frame">
+                <div class="col-lg-6 col-md-5 col-sm-5 col-xs-5">
+                    <div class="product_image-focus">
+                        <th:block th:each="itemImage : *{imageDTOS}" th:object="${itemImage}">
+                            <th:block th:if="*{is_preview}">
+                                <img  th:src="@{/image_upload/{path}(path=*{path})}" alt="" id="image_focus">
+                            </th:block>
+                        </th:block>
+                    </div>
+                    <div class="product_image">
+                        <div class="image_item" th:each="itemImage : *{imageDTOS}" th:object="${itemImage}">
+                            <a th:attr='class=*{is_preview} ? active'
+                                th:onclick="changeImageFocus([[${itemImage.path}]])">
+                                <img  th:src="@{/image_upload/{path}(path=*{path})}" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-7 col-sm-7 col-xs-7 ">
+                    <div class="item-info">
+                        <h3 class="info_name" th:text="*{name}"></h3>
+                        <div class="product_info-price">
+                            <span class="price_special">
+                                <span th:text="*{pricePromotion} ? *{pricePromotion} : *{price}" th:remove="tag"></span><sup>đ</sup>
+                            </span>
+                            <th:block th:if="*{pricePromotion}">
+                                <span class="price_old" >[[*{price}]]<sup>đ</sup></span>
+                            </th:block>
+                        </div>
+                        <p th:text="*{description}"></p>
+                        <div>
+                            <span>Số lượng: </span>
+                            <input type="number" min="1" value="1"/>
+                        </div>
+                        <button class="btn btn_addtocart" th:onclick="handleAddToCart([[${foodDto.id}]])">Thêm vào giỏ hàng</button>
+                    </div>
+                </div>
+            </div>
+            <button class="btn close_quick_view"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </aside>
+        <script>
+            $('.close_quick_view').click(()=>{
+                $('#quick_view').css("display","none");
+            })
+        </script>
+    </div>
+</div>

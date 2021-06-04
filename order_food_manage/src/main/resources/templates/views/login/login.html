@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/login.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body layout:fragment="content">
+    <section  class="login" >
+        <div class="login_blurred"></div>
+        <div class="login_body">
+            <!-- login form -->
+            <form th:action="@{/j_spring_security_check }" id="formlogin" method="POST">
+                <div class="auth_form" th:object="${userDTO}">
+                    <div class="auth_form-container">
+                        <th:block th:if="${userDTO.alert}">
+                            <div class="alert" th:classappend="*{alert != null} ? 'alert-'+*{alert} : ''"  th:text="*{message}"></div>
+                        </th:block>
+                        <div class="auth_form-header">
+                            <h3>LOGIN NOW</h3>
+                        </div>
+                        <div class="auth_form-body">
+                            <input type="text" class="auth_form-input" name="username" id="username_login" placeholder="Username" maxlength="30" pattern="[a-zA-Z0-9!@#$%^&*]{6,}" th:value="*{username}" required>
+                            <input type="password" class="auth_form-input" name="password" id="password_login" placeholder="Password" maxlength="20" pattern="[a-zA-Z0-9!@#$%^&*]{6,}" th:value="*{password}" required>
+                            <div class="remember_me">
+                                <label for="remember-me">Remember me</label>
+                                <input type="checkbox" id="remember-me" name="remember-me">
+                            </div>
+                        </div>
+                        <aside class="auth_form-help">
+                            <div class="help_forgot">
+                                <span>Forgot Password? </span>
+                                <a >Click here</a>
+                            </div>
+                            <div class="help_register">
+                                <span>New user? </span>
+                                <a th:href="@{/register}" class="on_register">Register here</a>
+                            </div>
+                        </aside>
+                        <div class="auth_form-controls">
+                            <a th:href="@{/index}" class="btn btn_control control_back" id="back_login">Back</a>
+                            <input type="submit"  class="btn btn_control control_login" id="confirm_login" value="Login">
+                        </div>
+                        <div class="auth-form__socials">
+                            <span>Or login with </span>
+                            <a href="https://www.facebook.com/" class="btn facebook">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://accounts.google.com/ServiceLogin/identifier?continue=https%3A%2F%2Fwww.google.com%2Fwebhp%3Fauthuser%3D2&hl=vi&flowName=GlifWebSignIn&flowEntry=AddSession"
+                               class="btn google">
+                                <i class="fa fa-google" aria-hidden="true"></i>
+                            </a>
+                            <a href="https://accounts.google.com/ServiceLogin/identifier?continue=https%3A%2F%2Fwww.google.com%2Fwebhp%3Fauthuser%3D2&hl=vi&flowName=GlifWebSignIn&flowEntry=AddSession"
+                               class="btn twitter">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <script>
+
+        // function setTokenWhenLogin(){
+        //     let username = document.querySelector('input[name="username"]');
+        //     let password = document.querySelector('input[name="password"]');
+        //     const data = { "username" : username.value, "password": password.value };
+        //     $.ajax({
+        //         url: '/login',
+        //         type: 'POST',
+        //         contentType: 'application/json',
+        //         data: JSON.stringify(data),
+        //         dataType: 'text',
+        //         success: result=>{
+        //             document.cookie = "Authorization=Bearer "+result;
+        //             console.log(result);
+        //             console.log(getTokenInCookie());
+        //             // $("#formlogin").submit();
+        //         },
+        //         error: result=>{
+        //             console.log("error: "+result);
+        //         }
+        //     });
+            // fetch('http://localhost:8081/login', {
+            //     method: 'POST', // or 'PUT'
+            //     headers: {
+            //         'Content-Type': 'text',
+            //     },
+            //     body: JSON.stringify(data),
+            // })
+            // .then(result => {
+            //     console.log('Success:', result);
+            // })
+            // .catch((error) => {
+            //     console.error('Error:', error);
+            // });
+        //}
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<div class="col-lg-2 col-md-2 col-sm-2 sidebar hidden-sm"  xmlns:th="http://thymeleaf.org" th:fragment="menu">
+    <ul class="list-group">
+        <li class="list-group-item"  th:classappend="${session.active} == 'dashboard' ? active : ''" ><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+        <li class="list-group-item" th:classappend="${session.active} == 'food' ? active : ''">
+            <a th:href="@{/admin/food}">
+                <i class="fa fa-cutlery" aria-hidden="true"></i>
+                &nbsp; Food
+            </a>
+        </li>
+        <li class="list-group-item" th:classappend="${session.active} == 'category' ? active : ''">
+            <a th:href="@{/admin/category}">
+                <i class="fa fa-th-large" aria-hidden="true"></i>
+                &nbsp; Category
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a th:href="@{/admin/image}" th:classappend="${session.active} == 'image' ? active : ''">
+                <i class="fa fa-object-group" aria-hidden="true"></i>
+                &nbsp; Image
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a th:href="@{/admin/group}" th:classappend="${session.active} == 'group' ? active : ''">
+                <i class="fa fa-clipboard" aria-hidden="true"></i>
+                &nbsp; Food Group
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a th:href="@{/admin/order}" th:classappend="${session.active} == 'order' ? active : ''">
+                <i class="fa fa-file" aria-hidden="true"></i>
+                &nbsp; Orders
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a th:href="@{/admin/user}" th:classappend="${session.active} == 'user' ? active : ''">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                &nbsp; User
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a th:href="@{/admin/role}" th:classappend="${session.active} == 'role' ? active : ''">
+                <i class="fa fa-user-secret" aria-hidden="true"></i>
+                &nbsp; Role
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a th:href="@{/admin/contact}" th:classappend="${session.active} == 'contact' ? active : ''">
+                <i class="fa fa-commenting" aria-hidden="true"></i>
+                &nbsp; Contact
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a th:href="@{/admin/statistic}" th:classappend="${session.active} == 'statistic' ? active : ''">
+                <i class="menu-icon fa fa-signal" aria-hidden="true"></i>
+                &nbsp; Statistic
+            </a>
+        </li>
+    </ul>
+</div>

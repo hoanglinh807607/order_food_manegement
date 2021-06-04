@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/client.html}"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+</head>
+<body layout:fragment="content">
+                <section class="container bg-white">
+                    <div class="row mt-4 shopping_cart">
+                        <h2 class="text-center">GIỎ HÀNG</h2>
+                        <th:block th:unless="${session.order.listOrderDetail.size()}">
+                            <div class="empty_cart">
+                                <img th:src="@{/image/buynow.png}" alt="">
+                                <p>Giỏ hàng của bạn còn trống</p>
+                                <a th:href="@{/index}" class="btn btn-buy_now">Mua ngay</a>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${session.order.listOrderDetail.size()}">
+                            <th:block th:if="${session.auth.getName()} != 'anonymousUser'">
+                                <div class="address_receiver">
+                                    <h3 class="address_receiver-title"><i class="fa fa-map-marker" aria-hidden="true"></i> Địa chỉ nhận hàng</h3>
+                                    <div class="address_receiver-info">
+                                        <span class="info-fullname"><strong>[[${session.userDTO.fullName}]]</strong></span>
+                                        <span class="info-phone"><strong>([[${session.userDTO.phone}]])</strong></span>
+                                        <span class="info-address">[[${session.userDTO.address}]]</span>&ensp;&ensp;
+                                        <span class="info-change" onclick="changeAddressReceiver()">Thay đổi</span>
+                                    </div>
+                                    <div class="address_receiver-change">
+                                        <form>
+                                            <div>
+                                                <input type="text" th:value="${session.userDTO.fullName}" id="fullname" disabled="readOnly">
+                                                <input type="text" th:value="${session.userDTO.phone}" id="phone" maxlength="10" >
+                                                <input type="text" th:value="${session.userDTO.address}" id="address" size="100" >
+                                            </div>
+                                            <button type="button" onclick="finishChangeAddressReceiver()" class="btn btn_finish-changeaddress">Hoàn Thành</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="payment_methods">
+                                    <h3>Phương thức thanh toán</h3>
+                                    <span>Chọn phương thức thanh toán: </span> &ensp; &ensp;
+                                    <input type="radio" value="0" name="payment_methods" id="0">
+                                    <label for="0">Thanh toán khi nhận hàng</label>&ensp;&ensp;
+                                    <input type="radio" value="1" name="payment_methods" id="1">
+                                    <label for="1">Thanh toán online</label>
+                                </div>
+                            </th:block>
+                            <table id="cart" class="table table-hover table-condensed text_center">
+                                <thead>
+                                    <tr>
+                                        <th style="width:20%">Tên sản phẩm</th>
+                                        <th style="width:30%">Mô tả</th>
+                                        <th style="width:10%">Giá</th>
+                                        <th style="width:8%">Số lượng</th>
+                                        <th style="width:20%" class="text-center">Thành tiền</th>
+                                        <th style="width:12%"> </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="orderDetail : ${session.order.listOrderDetail}" th:object="${orderDetail.foodDTO}" th:id="*{id}">
+                                        <td data-th="Product" class="item_image_cart">
+                                            <th:block th:each="itemImage : *{imageDTOS}" th:object="${itemImage}">
+                                                <th:block th:if="*{is_preview}">
+                                                    <img th:src="@{/image_upload/{path}(path=*{path})}"
+                                                         alt="Sản phẩm 1" class="img-responsive" width="100">
+                                                </th:block>
+                                            </th:block>
+                                        </td>
+                                        <td>
+                                            <h6 class="nomargin" th:text="*{name}"></h6>
+                                        </td>
+                                        <td data-th="Price">
+                                                <span th:text="${orderDetail.price}" th:remove="tag">
+                                                </span>
+                                            đ
+                                        </td>
+                                        <td data-th="Quantity">
+                                            <input class="form-control text-center" th:value="${orderDetail.quantity}" th:onclick="changeQuantity([[${orderDetail.foodDTO.id}]],this.value);" min="1" type="number">
+                                        </td>
+                                        <td data-th="Subtotal" class="text-center">
+                                                 <span th:text="${orderDetail.subTotal}" th:id="subtotal_+*{id}">
+                                                </span>
+                                            đ
+                                        </td>
+                                        <td class="actions" data-th="">
+                                            <button class="btn btn-danger btn-sm" th:onclick="deleteObject([[${orderDetail.foodDTO.id}]]);">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td style="text-align: left;">
+                                            <a th:href="@{/index}" class="btn btn-secondary btn-nextbycart">
+                                                <i class="fa fa-angle-left"></i>
+                                                Tiếp tục mua hàng
+                                            </a>
+                                        </td>
+                                        <td colspan="3" class="hidden-xs"></td>
+                                        <td class="hidden-xs text-center tong-tien">Tổng tiền:<strong th:text="${session.order.total}" id="total"></strong>đ
+                                        </td>
+                                        <td>
+                                            <th:block th:if="${session.auth.getName()} == anonymousUser">
+                                                <a th:href="@{/cart/pay}" class="btn btn-success btn-block">Đặt mua
+                                                    <i class="fa fa-angle-right"></i>
+                                                </a>
+                                            </th:block>
+                                            <th:block th:unless="${session.auth.getName()} == anonymousUser">
+                                                <a class="btn btn-success btn-block" onclick="payOrder()" >Đặt mua
+                                                    <i class="fa fa-angle-right"></i>
+                                                </a>
+                                            </th:block>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </th:block>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+    <script>
+        function payOrder(){
+            let quantityInCart = document.querySelector(".cart-popup-count");
+            if( Number(quantityInCart.innerHTML) === 0){
+                informEmptyCart();
+            }else{
+                ConfirmPay();
+            }
+        }
+        function ConfirmPay(){
+            swal({
+                title: "Inform",
+                text: "Xác nhận đặt mua đơn hàng!",
+                type: "question",
+                showCancelButton: true,
+                confirmButtonClass: "btn-success",
+                confirmButtonText: "Oke",
+            }).then(function(isConfirm) {
+                if (isConfirm.dismiss != "cancel") {
+                    handlePay();
+                }
+            });
+        };
+        function handlePay(){
+            let fullname = document.getElementById("fullname").value;
+            let phone = document.getElementById("phone").value;
+            let address = document.getElementById("address").value;
+            let payment_methods = document.getElementsByName("payment_methods");
+            let paymentMethod;
+            for (var i = 0; i < payment_methods.length; i++) {
+                if (payment_methods[i].checked === true) {
+                    paymentMethod = payment_methods[i].value;
+                }
+            }
+            if( paymentMethod == undefined){
+                alert("Bạn chưa chọn phương thúc thanh toán!");
+                return false;
+            }
+            const data = {"fullName": fullname, "phone": phone, "address": address}
+            $.ajax({
+                url: '/cart/pay?paymentMethods=' + paymentMethod,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                dataType: 'json',
+                success: result => {
+                    informPaySuccess();
+                },
+                error: result => {
+                    alert(result);
+                    console.log(result);
+                }
+            });
+        }
+        function informPaySuccess(){
+            swal({
+                title: "Inform",
+                text: "Đặt mua thành công.",
+                type: "success",
+                confirmButtonClass: "btn-success",
+                confirmButtonText: "Đóng",
+            }).then(function(isConfirm) {
+                window.location.assign("/shopping-cart");
+            });
+        };
+        function informEmptyCart(){
+            swal({
+                title: "Inform",
+                text: "Chưa có sản phẩm trong giỏ hàng",
+                type: "warning",
+                confirmButtonClass: "btn-success",
+                confirmButtonText: "Đóng",
+            }).then(function(isConfirm) {
+            });
+        };
+        function changeAddressReceiver(){
+            document.querySelector(".address_receiver-info").style.display = "none";
+            document.querySelector(".address_receiver-change").style.display = "block"
+        }
+        function finishChangeAddressReceiver(){
+            let regex = new RegExp("^(0[2-9][0-9]{8})$");
+            let phone = document.getElementById("phone").value;
+            if( regex.test(phone) == false ){
+                alert("Số điện thoại không đúng");
+                return false;
+            }
+            document.querySelector(".address_receiver-info").style.display = "block";
+            document.querySelector(".address_receiver-change").style.display = "none";
+            document.querySelector(".info-phone").innerHTML = '<strong>'+phone+'</strong>';
+            document.querySelector(".info-address").innerHTML = document.getElementById("address").value;
+        }
+    </script>
+</body>
+</html>

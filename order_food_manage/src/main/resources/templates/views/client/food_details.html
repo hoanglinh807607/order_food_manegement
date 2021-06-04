@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/client.html}"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Food Details</title>
+</head>
+<body layout:fragment="content">
+                <div class="col-lg-9 product_detail" th:object="${foodDto}">
+                    <aside>
+                        <div class="row product_detail-frame">
+                            <div class="col-lg-6 col-md-5 col-sm-12 col-xs-12">
+                                <div class="product_image-focus">
+                                    <th:block th:each="itemImage : *{imageDTOS}" th:object="${itemImage}">
+                                        <th:block th:if="*{is_preview}">
+                                            <img  th:src="@{/image_upload/{path}(path=*{path})}" alt="" id="image_focus">
+                                        </th:block>
+                                    </th:block>
+                                </div>
+                                <div class="product_image">
+                                    <div class="image_item" th:each="itemImage : *{imageDTOS}" th:object="${itemImage}">
+                                        <a th:id="image_+*{id}" th:attr='class=*{is_preview} ? active' th:onclick="changeImageFocus([[${itemImage.path}]])">
+                                            <img  th:src="@{/image_upload/{path}(path=*{path})}" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-7 col-sm-12 col-xs-12 ">
+                                <div class="item-info" >
+                                    <h3 class="info_name" th:text="*{name}"></h3>
+                                    <div class="product_info-price">
+                                        <span class="price_special">[[*{price}]]<sup>đ</sup></span>
+                                        <th:block th:if="*{pricePromotion}">
+                                            <span class="price_old" >[[*{pricePromotion}]]<sup>đ</sup></span>
+                                        </th:block>
+                                    </div>
+                                    <p th:text="*{description}"></p>
+                                    <div>
+                                        <span>Số lượng: </span>
+                                        <input type="number" min="1" value="1"/>
+                                    </div>
+                                    <button class="btn btn_addtocart" th:onclick="handleAddToCart([[${foodDto.id}]])">Thêm vào giỏ hàng</button>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                    <div class="discription">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                                <div class="discription_title">Mô tả sản phẩm</div>
+                            </div>
+                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                                <div class="discription_content" th:text="*{description}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

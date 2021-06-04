@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/admin.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Food edit</title>
+</head>
+<body layout:fragment="content">
+<div class="col-md-10 main__content" th:object="${foodDTO}"> <!-- .main__content -->
+    <form th:action="@{/admin/api/food}" id="form_submit" method="POST">
+        <div class="header__main">
+            <h1 class="header__main-title">Food</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/food/}">Food</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Detail</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="body__main mt-2">
+            <div class="body__main-header">
+                <i class="fa fa-asterisk" aria-hidden="true"></i> Detail
+            </div>
+            <hr>
+            <div class="body__main-content">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-12">
+                        <th:block th:each="imageItem : *{imageDTOS}" th:if="${imageItem.is_preview}">
+                            <img class="img_detail" th:src="@{/image_upload/{image}(image=${imageItem.path})}" alt="">
+                        </th:block>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-12">
+                        <div class="content__form-group mt-1">
+                            <div class="form-group__label col-2">
+                                <h5>Name:</h5>
+                            </div>
+                            <p th:text="*{name}"></p>
+                        </div>
+                        <div class="content__form-group mt-1">
+                            <div class="form-group__label col-2">
+                                <h5>Price:</h5>
+                            </div>
+                            <p th:text="*{price}"></p>
+                        </div>
+                        <div class="content__form-group mt-1">
+                            <div class="form-group__label col-2">
+                                <h5>Price Promotion:</h5>
+                            </div>
+                            <p th:text="*{pricePromotion}"></p>
+                        </div>
+                        <div class="content__form-group mt-1">
+                            <div class="form-group__label col-2">
+                                <h5>Description:</h5>
+                            </div>
+                            <p th:text="*{description}"></p>
+                        </div>
+                        <div class="content__form-group mt-1">
+                            <div class="form-group__label col-2">
+                                <h5>Category name:</h5>
+                            </div>
+                            <p th:text="*{categoryName}"></p>
+                        </div>
+                        <div class="content__form-group mt-1">
+                            <div class="form-group__label col-2">
+                                <h5>Group name:</h5>
+                            </div>
+                            <p th:text="*{foodGroupName}"></p>
+                        </div>
+                        <div class="content__form-group mt-1">
+                            <div class="form-group__label col-2">
+                                <h5>Created By:</h5>
+                            </div>
+                            <p th:text="*{createdBy}"></p>
+                        </div>
+                        <div class="content__form-group mt-1">
+                            <div class="form-group__label col-2">
+                                <h5>Created Date:</h5>
+                            </div>
+                            <p th:text="*{createdDate}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div> <!-- /.main__content -->
+</body>
+</html>
+
+

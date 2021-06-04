@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{decorators/admin.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Image edit</title>
+</head>
+<body layout:fragment="content">
+<div class="col-md-10 main__content" th:object="${imageDTO}"> <!-- .main__content -->
+    <form th:action="@{/admin/api/image}" id="form_submit" method="POST" enctype="multipart/form-data">
+        <div class="header__main">
+            <h1 class="header__main-title">Image</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{/admin/dashboard}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/image}">Image</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="*{id != null} ? Edit : Insert" ></li>
+                </ol>
+            </nav>
+        </div>
+        <div th:if="*{alert != null && alert != ''}">
+            <div class="alert" th:classappend="*{alert != null} ? 'alert-'+*{alert} : ''"  th:text="*{message}"></div>
+        </div>
+        <div class="body__main mt-2">
+            <div class="body__main-header" th:if="*{id != null}">
+                <i class="fa fa-pencil-square" aria-hidden="true"></i> Edit Image
+            </div>
+            <div class="body__main-header" th:if="*{id == null}">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> Insert Image
+            </div>
+            <hr>
+            <div class="body__main-content">
+                <div class="content__form-group">
+                    <div class="form-group__label col-2">
+                        <label for="food" class="col-form-label">Food<strong style="color: red;">*</strong>: </label>
+                    </div>
+                    <select class="form-control form-group__input" id="food" th:field="*{foodId}" required>
+                        <option value="0">Chose Food</option>
+                        <option th:each="food : ${foodList}" th:value="${food.id}" th:text="${food.name}" th:selected="*{foodId}==${food.id}"></option>
+                    </select>
+                </div>
+                <div class="content__form-group">
+                    <th:block th:if="*{id == null}">
+                        <div class="form-group__label col-2">
+                            <label for="image" class="col-form-label">Path preview<strong style="color: red;">*</strong>: </label>
+                        </div>
+                        <input type="file" class="form-group__input" id="imagePreview" name="imagePreview" >
+                    </th:block>
+                    <th:block th:unless="*{id == null}">
+                        <div class="form-group__label col-2">
+                            <label for="is_preview" class="col-form-label">Is preview<strong style="color: red;">*</strong>: </label>
+                        </div>
+                        <input class="form-check-input" type="checkbox" id="is_preview" th:field="*{is_preview}">
+                    </th:block>
+                </div>
+                <div class="content__form-group">
+                    <div class="form-group__label col-2">
+                        <label for="image" class="col-form-label">Path<strong style="color: red;">*</strong>: </label>
+                    </div>
+                    <input type="file" multiple="multiple" class="form-group__input" id="image" name="image" >
+                </div>
+                <div class="content__button">
+                    <th:block th:if="*{id == null}">
+                        <button type="submit" class="btn btn-primary btn-lg btn-add">Add Product</button>
+                    </th:block>
+                    <th:block th:unless="*{id == null}">
+                        <button type="submit" class="btn btn-primary btn-lg btn-add">Update Product</button>
+                    </th:block>
+                    <a class="btn btn-secondary btn-lg btn-cancel">Cancel</a>
+                </div>
+                <input type="hidden" id="id" th:field="*{id}">
+            </div>
+        </div>
+    </form>
+</div> <!-- /.main__content -->
+<script>
+    $(".btn-cancel").click(()=>{
+        $('#food option:eq(0)').attr('selected', 'selected')
+        $("#is_preview").removeAttr("checked");
+        $("#Path").val("");
+    })
+</script>
+</body>
+</html>
+
+

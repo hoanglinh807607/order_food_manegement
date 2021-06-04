@@ -1,0 +1,247 @@
+:root{
+    --main-bg: rgb(216, 48, 48);
+    --bg-menu: rgb(32, 43, 44);
+    --main-color: #ffffff;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+a{
+    text-decoration: none;
+}
+option{
+    text-transform: capitalize;
+}
+@media ( max-width: 768px ) {
+    .hidden-sm{
+        display: none !important;
+    }
+}
+.header_logo{
+    color: var(--main-color);
+    background-color: rgb(214, 32, 32);
+    text-align: center;
+    display: flex;
+}
+.header_logo h5{
+    margin: auto;
+}
+.navbar{
+    display: flex;
+    justify-content: flex-end;
+    font-size: 30px;
+    background-color: var(--main-bg);
+}
+.header_nav nav>ul{
+    display: flex;
+    margin: 0;
+}
+.header_nav{
+    line-height: 40px;
+    padding-right: 10px;
+}
+.header_nav nav>ul>li, .header_nav .dropdown>a{
+    list-style: none;
+    color: var(--main-color);
+}
+.header_nav .dropdown>a{
+    font-weight: 500;
+    font-size: 20px;
+}
+.header_nav .dropdown .dropdown-menu{
+    left: -50px;
+    background-color: rgb(28, 59, 61);;
+}
+.header_nav .dropdown .dropdown-menu li a{
+    color: var(--main-color);
+    font-size: 20px;
+}
+.header_nav .dropdown .dropdown-menu li a:hover{
+    background-color:  rgb(163, 170, 170);
+}
+/* sidebar */
+.sidebar{
+    border-right: 1px solid #ddd;
+    border-left: 1px solid rgb(32, 43, 44);
+    box-shadow: 2px 1px 1px;
+    min-height: 690px;
+    background-color: var(--bg-menu);
+    padding: 0;
+    position: relative;
+}
+.list-group{
+    border-radius: 0px;
+}
+.list-group .list-group-item{
+    background-color: rgb(28, 59, 61);
+    color: #fff;
+    padding: 0;
+    font-weight: 500;
+    border-bottom: rgb(2, 11, 39) 1px solid;
+    font-size: 18px;
+}
+.list-group .list-group-item:hover{
+    background-color: rgb(163, 170, 170);
+}
+.list-group .active{
+    border-color:  rgb(163, 170, 170);
+}
+.list-group .active::after{
+    content: "";
+    right: 8px;
+    top: 20px;
+    border-style: solid;
+    border-width: 10px 15px;
+    border-color: transparent #fff transparent transparent;
+    display: block;
+    position: absolute;
+}
+.list-group li a{
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    padding: 15px;
+    font-size: 18px;
+}
+/* Main */
+.main__content{
+    padding: 20px 30px 0px 30px;
+}
+.main__content .card-body{
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+}
+.card-body .card-title{
+    font-size: 40px;
+}
+.header__main{
+    display: flex;
+    justify-content: space-between;
+}
+.header__main-title{
+    color:rgb(128, 131, 131)   ;
+}
+.breadcrumb li a{
+    text-decoration: none;
+}
+.body__main{
+    border: 1px solid rgb(226, 225, 225);
+    padding: 10px;
+    box-shadow: 0px -3px rgb(3, 14, 107);
+    border-radius: 5px;
+}
+.body__main .btn__add{
+    color: #fff;
+}
+.body__main nav{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.body__main .datatable__length{
+    margin-top: 10px;
+    font-size: 600;
+    font-size: 18px;
+}
+.body__main .datatable__length select{
+    width: 50px;
+}
+.body__main .body__main-search{
+    display: flex;
+    justify-content: left;
+}
+.body__main nav .search{
+    margin-right: 10px;
+}
+.body__main table{
+    text-align: center;
+    vertical-align: middle;
+}
+table tbody tr td img{
+    max-width: 200px;
+    max-height: 200px;
+}
+tbody tr td{
+    font-size: 18px;
+    font-weight: 400;
+}
+table tbody tr td a{
+    margin-left: 20px;
+}
+.pagging{
+    display: flex;
+    justify-content: center;
+}
+/* Edit */
+.body__main-header{
+    font-size: 22px;
+}
+
+.content__form-group{
+    display: flex;
+    margin-top: 30px;
+}
+.content__form-group .form-group__label{
+    text-align: right;
+    margin-right: 30px;
+}
+.content__form-group .form-group__input{
+    width: 60%;
+    padding: 10px;
+}
+.body__main-content .content__button{
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+.body__main-content .content__button .btn-add{
+    margin-right: 50px;
+}
+/* Edit */
+.body__main-header{
+    font-size: 22px;
+}
+
+.content__form-group{
+    display: flex;
+    margin-top: 30px;
+}
+.col-form-label{
+    line-height: 40px;
+}
+.content__form-group .form-group__label{
+    text-align: right;
+    margin-right: 30px;
+}
+.content__form-group .form-group__input{
+    width: 60%;
+}
+.body__main-content .content__button{
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+.body__main-content .content__button .btn-add{
+    margin-right: 50px;
+}
+.btn_lable-check{
+    line-height: 40px;
+}
+.form-check-input{
+    width: 24px;
+    height: 24px;
+    margin-top: 12px;
+}
+
+/* Table restore*/
+.select_table-restore{
+    padding: 5px 7px;
+    font-size: 18px;
+}
+/* detail food */
+.img_detail{
+    width: 100%;
+}
