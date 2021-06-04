@@ -16,7 +16,7 @@
                 <td><img th:src="@{/image_upload/{path}(path=*{path})}" alt=""></td>
                 <td th:text="*{is_preview} == true ? 1 : 0"></td>
                 <td th:text="*{foodName}"></td>
-                <td><a th:href="@{/admin/api/image/detail/{id}(id=*{id})}" class="btn btn-info"
+                <td><a th:href="@{/admin/image/detail/{id}(id=*{id})}" class="btn btn-info"
                 ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
             </tr>
         </th:block>

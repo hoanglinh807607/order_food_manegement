@@ -63,21 +63,6 @@ public class HomeController {
         return "views/client/contact";
     }
 
-    @GetMapping("/list/food")
-    public String showListFoodByCategory(HttpSession session,
-                                         Model model,
-                                         @RequestParam(name = "category_code",required = false) String category_code,
-                                         @RequestParam(name = "page", defaultValue = "1",required = false) int page){
-        model.addAttribute("categoryList",session.getAttribute("categoryList"));
-        model.addAttribute("FoodDTOByCategoryCode",foodService.getFoodByCategoryCodeAndPagination(category_code, 1, 12, true));
-        model.addAttribute("byFoodName", Comparator.comparing(FoodDTO::getName));
-        session.setAttribute(SystemConstant.SESSION_ACTIVE_MENU_CLIENT, category_code);
-        session.setAttribute(SystemConstant.SESSION_ACTIVE,"");
-        return "views/client/foodbycategorycode/listfoodbycategory";
-    }
-
-
-
     @GetMapping("/shopping-cart")
     public String showCart(HttpSession session){
         // Khi đăng nhập thành công thì cập nhật lại là người đăng nhập

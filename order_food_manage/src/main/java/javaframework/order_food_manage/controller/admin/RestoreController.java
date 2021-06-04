@@ -20,6 +20,15 @@ import java.util.List;
 @RequestMapping("/admin")
 public class RestoreController{
 
+    @Autowired ContactService contactService;
+    @Autowired CategoryService categoryService;
+    @Autowired FoodService foodService;
+    @Autowired FoodGroupService foodGroupService;
+    @Autowired ImageService imageService;
+    @Autowired OrderService orderService;
+    @Autowired RoleService roleService;
+    @Autowired UserService userService;
+
     @GetMapping("/restore")
     public String showList(Model model, HttpSession session,
                            @RequestParam(name = "table", defaultValue = "") String table) {
@@ -29,6 +38,23 @@ public class RestoreController{
         model.addAttribute("abstractDTO",abstractDTO);
         session.setAttribute(SystemConstant.SESSION_ACTIVE,"restore");
         return "views/admin/restore/restore_management";
+    }
+
+    @PostMapping(value = "/restore", consumes = "application/json", produces = "application/json")
+    public String showTable(Model model, @RequestBody AbstractDTO abstractDTO) {
+        String url = null;
+        switch (abstractDTO.getTable()){
+            case "1": abstractDTO = foodService.getAllPagination(1,1,abstractDTO.getSearch(),false); url = "views/admin/restore/table_food"; break;
+            case "2": abstractDTO = categoryService.getAllPagination(1,1,abstractDTO.getSearch(),false); url = "views/admin/restore/table_category"; break;
+            case "3": abstractDTO = imageService.getAllPagination(1,1,abstractDTO.getSearch(),false); url = "views/admin/restore/table_image"; break;
+            case "4": abstractDTO = foodGroupService.getAllPagination(1,1,abstractDTO.getSearch(),false); url = "views/admin/restore/table_group"; break;
+            case "5": abstractDTO = orderService.getAllPagination(1,1,abstractDTO.getSearch(),false); url = "views/admin/restore/table_order"; break;
+            case "6": abstractDTO = userService.getAllPagination(1,1,abstractDTO.getSearch(),false); url = "views/admin/restore/table_user"; break;
+            case "7": abstractDTO = roleService.getAllPagination(1,1,abstractDTO.getSearch(),false); url = "views/admin/restore/table_role"; break;
+            case "8": abstractDTO = contactService.getAllPagination(1,1,abstractDTO.getSearch(),false); url = "views/admin/restore/table_contact"; break;
+        }
+        model.addAttribute("dto",abstractDTO);
+        return url;
     }
 
 }

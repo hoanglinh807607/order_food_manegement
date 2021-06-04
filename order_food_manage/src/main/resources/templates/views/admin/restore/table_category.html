@@ -14,7 +14,7 @@
                 <td scope="row"><input type="checkbox" name="id" th:value="*{id}"></td>
                 <td th:text="*{code}"></td>
                 <td th:text="*{name}"></td>
-                <td><a th:href="@{/admin/api/category/detail/{id}(id=*{id})}" class="btn btn-info" title="Detail"
+                <td><a th:href="@{/admin/category/detail/{id}(id=*{id})}" class="btn btn-info" title="Detail"
                 ><i class="fa fa-search-plus" aria-hidden="true"></i></a></td>
             </tr>
         </th:block>

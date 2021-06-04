@@ -10,7 +10,7 @@
 </head>
 <body layout:fragment="content">
 <div class="main__content"> <!-- .main__content -->
-    <form th:action="@{/admin/api/restore}" id="form_submit" method="GET" th:object="${abstractDTO}">
+    <form th:action="@{/admin/restore}" id="form_submit" method="GET" th:object="${abstractDTO}">
         <div class="header__main">
             <h1 class="header__main-title">Restore</h1>
             <nav aria-label="breadcrumb">
@@ -95,7 +95,7 @@
             "table" : $('#listTableName').val(),
             "search" : $('#search').val(),
         };
-        ajaxLoadTable('/admin/api/restore','POST',data);
+        ajaxLoadTable('/admin/restore','POST',data);
     });
 
     function warningBeforeDelete(all) {
@@ -177,7 +177,7 @@
             dataType: 'json',
             success: result =>{
                 console.log(result);
-                window.location.assign("/admin/api/restore?table="+result.table);
+                window.location.assign("/admin/restore?table="+result.table);
             },
             error: result =>{
                 console.log(result);

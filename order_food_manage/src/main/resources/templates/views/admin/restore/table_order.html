@@ -23,10 +23,10 @@
                 <td th:text="*{user_customer.username}"></td>
                 <td th:text="*{orderStatus} ? 'Đã thanh toán' : 'Chưa thanh toán'"></td>
                 <td>
-                    <a th:href="@{/admin/api/order/{id}(id=*{id})}" class="btn btn-info">
+                    <a th:href="@{/admin/order/{id}(id=*{id})}" class="btn btn-info">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                     </a>
-                    <a th:href="@{/admin/api/order/detail/{id}(id=*{id})}" class="btn btn-info" title="Detail">
+                    <a th:href="@{/admin/order/detail/{id}(id=*{id})}" class="btn btn-info" title="Detail">
                         <i class="fa fa-search-plus" aria-hidden="true"></i>
                     </a>
                 </td>
